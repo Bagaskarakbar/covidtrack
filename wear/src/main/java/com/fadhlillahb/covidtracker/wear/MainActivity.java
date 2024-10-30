@@ -16,6 +16,18 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.wearable.DataClient;
+import com.google.android.gms.wearable.DataMap;
+import com.google.android.gms.wearable.DataMapItem;
+import com.google.android.gms.wearable.DataEvent;
+import com.google.android.gms.wearable.DataEventBuffer;
+import com.google.android.gms.wearable.DataItem;
+import com.google.android.gms.wearable.PutDataMapRequest;
+import com.google.android.gms.wearable.Wearable;
+
 import com.fadhlillahb.covidtracker.R;
 import com.fadhlillahb.covidtracker.databinding.ActivityMainBinding;
 import com.google.android.material.progressindicator.CircularProgressIndicator;
@@ -33,6 +45,8 @@ public class MainActivity extends Activity{
     private final static String APP_TAG = "MainActivity";
     private final static int MEASUREMENT_DURATION = 35000;
     private final static Long MEASUREMENT_TICK = 250L;
+    private static final String HEART_RATE_PATH = "/heart_rate"; // Define a specific path for heart rate
+    private static final String KEY_HEART_RATE = "key_heart_rate";
 
     private final AtomicBoolean isMeasurementRunning = new AtomicBoolean(false);
     Thread uiUpdateThread = null;
@@ -304,6 +318,16 @@ public class MainActivity extends Activity{
             );
         }
     }
+
+    public void performSend (View view){
+        PutDataMapRequest dataMapRequest = PutDataMapRequest.create(HEART_RATE_PATH); // Use HEART_RATE_PATH
+        DataMap dataMap = dataMapRequest.getDataMap();
+        dataMap.putInt(KEY_HEART_RATE, 100); // Send heart rate value
+        Wearable.getDataClient(this).putDataItem(dataMapRequest.asPutDataRequest())
+                .addOnSuccessListener(dataItem -> Log.d("WearMainActivity", "Heart rate sent: " + 100))
+                .addOnFailureListener(e -> Log.e("WearMainActivity", "Failed to send heart rate", e));
+    }
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {

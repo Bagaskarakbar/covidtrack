@@ -8,6 +8,7 @@
     <string name="SpO2Value">SpO2 value: </string>
     <string name="StopLabel">Stop</string>
     <string name="StartLabel">Measure</string>
+    <string name="SendLabel">Send</string>
     <string name="SpO2">SpO2</string>
     <string name="HeartRate">Heart Rate</string>
     <string name="HeartRateStatus">HR Status</string>
