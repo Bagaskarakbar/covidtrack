@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="#D3D3D3">
+
+    <RelativeLayout
+        android:id="@+id/big_layout"
+        android:layout_width="match_parent"
+        android:layout_marginHorizontal="30dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:orientation="vertical"
+        android:background="@drawable/rounded_box"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/vital_sign_data"
+            android:textSize="22sp"
+            android:layout_centerHorizontal="true"
+            android:textStyle="bold"
+            android:id="@+id/txTitle"
+            android:layout_marginTop="20dp"
+            android:textColor="@color/black"
+            >
+
+        </TextView>
+
+        <LinearLayout
+            android:id="@+id/layoutvert"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            tools:ignore="UselessParent"
+            android:layout_margin="20dp"
+            android:layout_below="@id/txTitle"
+            >
+
+            <LinearLayout
+                android:id="@+id/layoutTimestamp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/TxtTimestamp"
+                    android:id="@+id/TxtTimestamp"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:labelFor="@id/edtTimestamp"
+                    />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:importantForAutofill="no"
+                    android:textColorHint="#CFDADE"
+                    android:textColor="@color/black"
+                    android:id="@+id/edtTimestamp"
+                    android:textSize="16sp"
+                    android:inputType="number"
+                    android:enabled="false"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layoutHR"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/heart_rate"
+                    android:id="@+id/TxtHeartRate"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:labelFor="@id/edtHeartRate"
+                    />
+
+                <EditText
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:importantForAutofill="no"
+                    android:textColorHint="#CFDADE"
+                    android:textColor="@color/black"
+                    android:id="@+id/edtHeartRate"
+                    android:textSize="16sp"
+                    android:inputType="number"
+                    android:enabled="false"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layoutSPO"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/spo2"
+                    android:id="@+id/TxtSPO"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:labelFor="@id/edtSPO"
+                    />
+
+                <EditText
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:enabled="false"
+                    android:importantForAutofill="no"
+                    android:textColorHint="#CFDADE"
+                    android:textColor="@color/black"
+                    android:id="@+id/edtSPO"
+                    android:textSize="16sp"
+                    android:inputType="number" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layoutTemp"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/temperature"
+                    android:id="@+id/TxtTemp"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:labelFor="@id/edtTemp"
+                    />
+
+                <EditText
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:enabled="false"
+                    android:importantForAutofill="no"
+                    android:textColorHint="#CFDADE"
+                    android:textColor="@color/black"
+                    android:id="@+id/edtTemp"
+                    android:textSize="16sp"
+                    android:inputType="number" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layoutSystole"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/systole"
+                    android:id="@+id/TxtSystole"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:labelFor="@id/edtSystole"
+                    />
+
+                <EditText
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:enabled="false"
+                    android:importantForAutofill="no"
+                    android:textColorHint="#CFDADE"
+                    android:textColor="@color/black"
+                    android:id="@+id/edtSystole"
+                    android:textSize="16sp"
+                    android:inputType="number" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layoutDiastole"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/diastole"
+                    android:id="@+id/TxtDiastole"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:labelFor="@id/edtDiastole"
+                    />
+
+                <EditText
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:enabled="false"
+                    android:importantForAutofill="no"
+                    android:textColorHint="#CFDADE"
+                    android:textColor="@color/black"
+                    android:id="@+id/edtDiastole"
+                    android:textSize="16sp"
+                    android:inputType="number" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layoutRespirationRate"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/resp_rate"
+                    android:id="@+id/TxtResp"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:labelFor="@id/edtRespRate"
+                    />
+
+                <EditText
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:enabled="false"
+                    android:importantForAutofill="no"
+                    android:textColorHint="#CFDADE"
+                    android:textColor="@color/black"
+                    android:id="@+id/edtRespRate"
+                    android:textSize="16sp"
+                    android:inputType="number"
+                    />
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

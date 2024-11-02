@@ -1,3 +1,29 @@
 <resources>
     <string name="app_name">covidtracker</string>
+    <string name="insert_or_transfer">Insert or Transfer from watch</string>
+    <string name="heart_rate">Heart Rate :</string>
+    <string name="spo2">SPO2 :</string>
+    <string name="temperature">Temperature :</string>
+    <string name="systole">Systole</string>
+    <string name="diastole">Diastole :</string>
+    <string name="insert_data">Insert Data</string>
+    <string name="resp_rate">Resp. Rate :</string>
+    <string name="vital_sign_data_transfer">Input New Vital Signs</string>
+    <string name="history">History</string>
+    <string name="covid_19_emergency_status">covid-19 emergency status</string>
+    <string name="cov19_status_healthy">HEALTHY</string>
+    <string name="cov19_status_warning">WARNING</string>
+    <string name="cov19_status_EMERGENCY">EMERGENCY</string>
+    <string name="call_ambulance">call ambulance</string>
+    <string name="timestamp">TIMESTAMP</string>
+    <string name="data_taken_at">Data Taken at:</string>
+    <string name="marknext"><![CDATA[>]]></string>
+    <string name="vital_sign_data">Vital sign data</string>
+    <string name="TxtTimestamp">Timestamp :</string>
+    <string name="last_vital_sign">Last Vital Sign</string>
+    <string name="blood_pressure">Blood Pressure :</string>
+    <string name="x_per_hour">x Per Hour</string>
+    <string name="deg_celcius">°C</string>
+    <string name="datetime_dummy">dd/mm/yyyy</string>
+    <string name="extracted_at">Extracted at </string>
 </resources>

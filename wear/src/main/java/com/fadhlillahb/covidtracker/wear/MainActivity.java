@@ -16,15 +16,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.android.gms.wearable.DataClient;
 import com.google.android.gms.wearable.DataMap;
-import com.google.android.gms.wearable.DataMapItem;
-import com.google.android.gms.wearable.DataEvent;
-import com.google.android.gms.wearable.DataEventBuffer;
-import com.google.android.gms.wearable.DataItem;
 import com.google.android.gms.wearable.PutDataMapRequest;
 import com.google.android.gms.wearable.Wearable;
 
@@ -45,8 +37,10 @@ public class MainActivity extends Activity{
     private final static String APP_TAG = "MainActivity";
     private final static int MEASUREMENT_DURATION = 35000;
     private final static Long MEASUREMENT_TICK = 250L;
-    private static final String HEART_RATE_PATH = "/heart_rate"; // Define a specific path for heart rate
-    private static final String KEY_HEART_RATE = "key_heart_rate";
+    private static final String DATA_PATH = "/data_path"; // Define a specific path for heart rate
+    private static final String KEY_TEMP = "key_temp";
+    private static final String KEY_SPO = "key_spo";
+    private static final String KEY_HR = "key_hr";
 
     private final AtomicBoolean isMeasurementRunning = new AtomicBoolean(false);
     Thread uiUpdateThread = null;
@@ -58,6 +52,7 @@ public class MainActivity extends Activity{
     private boolean permissionGranted = false;
     private int previousStatus = SpO2Status.INITIAL_STATUS;
     private HeartRateData heartRateDataLast = new HeartRateData();
+    private int spo2DataLast = 0;
     private TempData tempDataLast = new TempData();
     private TextView txtHeartRate;
     private TextView txtStatus;
@@ -142,6 +137,7 @@ public class MainActivity extends Activity{
                     runOnUiThread(() -> {
                         txtStatus.setText(R.string.StatusCompleted);
                         txtStatus.invalidate();
+                        spo2DataLast = spO2Value;
                         txtSpo2.setText(String.valueOf(spO2Value));
                         txtSpo2.invalidate();
                         butStart.setText(R.string.StartLabel);
@@ -320,11 +316,19 @@ public class MainActivity extends Activity{
     }
 
     public void performSend (View view){
-        PutDataMapRequest dataMapRequest = PutDataMapRequest.create(HEART_RATE_PATH); // Use HEART_RATE_PATH
+        PutDataMapRequest dataMapRequest = PutDataMapRequest.create(DATA_PATH);
         DataMap dataMap = dataMapRequest.getDataMap();
-        dataMap.putInt(KEY_HEART_RATE, 100); // Send heart rate value
+        HeartRateData heartratedata = heartRateDataLast;
+        TempData tempData = tempDataLast;
+        int spo2 = spo2DataLast;
+
+        //datas
+        dataMap.putInt(KEY_HR, heartratedata.hr);
+        dataMap.putInt(KEY_SPO, spo2);
+        dataMap.putFloat(KEY_TEMP, tempDataLast.wristSkinTemperature);
+
         Wearable.getDataClient(this).putDataItem(dataMapRequest.asPutDataRequest())
-                .addOnSuccessListener(dataItem -> Log.d("WearMainActivity", "Heart rate sent: " + 100))
+                .addOnSuccessListener(dataItem -> Log.d("DATACLIENTSENT", "the datas are : " + dataMap.getInt(KEY_HR) + " " + dataMap.getInt(KEY_SPO) + " " + dataMap.getFloat(KEY_TEMP)))
                 .addOnFailureListener(e -> Log.e("WearMainActivity", "Failed to send heart rate", e));
     }
 
