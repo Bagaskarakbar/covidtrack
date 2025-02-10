@@ -63,32 +63,10 @@ public class ConnectionManager {
             healthTrackingService.disconnectService();
     }
 
-    /*******************************************************************************************
-     * [Practice 1] Create blood oxygen level health tracker object
-     *  - get health tracker object
-     *  - pass it to spO2Listener
-     -------------------------------------------------------------------------------------------
-     *  - (Hint) Replace TODO 1 with parts of code
-     *      (1) get HealthTracker object using healthTrackingService.getHealthTracker()
-     *          use HealthTrackerType.SPO2_ON_DEMAND type as parameter
-     *      (2) pass it to spO2Listener using setHealthTracker function
-     ******************************************************************************************/
-
     public void initSpO2(SpO2Listener spO2Listener) {
         spO2Listener.setHealthTracker(healthTrackingService.getHealthTracker(HealthTrackerType.SPO2_ON_DEMAND));
         setHandlerForBaseListener(spO2Listener);
     }
-
-    /*******************************************************************************************
-     * [Practice 2] Create heart rate health tracker object
-     *  - get health tracker object
-     *  - pass it to heartRateListener
-     -------------------------------------------------------------------------------------------
-     *  - (Hint) Replace TODO 2 with parts of code
-     *      (1) get HealthTracker object using healthTrackingService.getHealthTracker()
-     *          use HealthTrackerType.HEART_RATE_CONTINUOUS type as parameter
-     *      (2) pass it to heartRateListener using setHealthTracker function
-     ******************************************************************************************/
 
     public void initHeartRate(HeartRateListener heartRateListener) {
         heartRateListener.setHealthTracker(healthTrackingService.getHealthTracker(HealthTrackerType.HEART_RATE_CONTINUOUS));

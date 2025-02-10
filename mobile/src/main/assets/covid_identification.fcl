@@ -1,0 +1,108 @@
+FUNCTION_BLOCK covid_identification
+
+VAR_INPUT
+	spo2 : REAL;
+	heart_rate: REAL;
+	body_temp: REAL;
+	systole: REAL;
+	diastole: REAL;
+	respiration_rate: REAL;
+END_VAR
+	
+VAR_OUTPUT
+	emergency_prediction: REAL;
+END_VAR
+
+FUZZIFY spo2
+	TERM low := (80,0) (80,1) (90,1) (92,0);
+	TERM medium := (90,0) (92,1) (94,1) (96,0);
+	TERM high := (94,0) (96,1) (100,1) (100,0);
+END_FUZZIFY
+
+FUZZIFY heart_rate
+	TERM low := (40,0) (40,1) (50,1) (60,0);
+	TERM medium := (60,0) (70,1) (80,1) (100,0);
+	TERM high := (90,0) (110,1) (180,1) (180,0);
+END_FUZZIFY
+
+FUZZIFY body_temp
+	TERM low := (34,0) (34,1) (37.2,1) (37.5,0);
+	TERM medium := (37.3,0) (37.5,1) (38.5,1) (39,0);
+	TERM high := (38.8,0) (39.2,1) (41,1) (41,0);
+END_FUZZIFY
+
+FUZZIFY systole
+	TERM low := (60,0) (60,1) (80,1) (90,0);
+	TERM medium := (80,0) (100,1) (120,1) (130,0);
+	TERM high := (120,0) (140,1) (180,1) (180,0);
+END_FUZZIFY
+
+FUZZIFY diastole
+	TERM low := (40,0) (40,1) (50,1) (60,0);
+	TERM medium := (55,0) (65,1) (80,1) (85,0);
+	TERM high := (80,0) (90,1) (110,1) (110,0);
+END_FUZZIFY
+
+FUZZIFY respiration_rate
+	TERM low := (10,0) (10,1) (12,1) (14,0);
+	TERM medium := (12,0) (16,1) (20,1) (24,0);
+	TERM high := (20,0) (25,1) (40,1) (40,0);
+END_FUZZIFY
+
+DEFUZZIFY emergency_prediction 
+	TERM healthy := (0,0) (0,1) (0.2,1) (0.3,0);
+	TERM emergency := (0.2,0) (0.3,1) (0.6,1) (0.7,0);
+	TERM icu := (0.6,0) (0.7,1) (1,1) (1,0);
+	METHOD : COG;
+	DEFAULT := 0;
+END_DEFUZZIFY
+
+RULEBLOCK No1
+	AND : MIN;
+    OR : MAX;
+    ACT : MIN;
+    ACCU : MAX;
+
+    RULE 1 : IF spo2 IS low AND heart_rate IS high AND body_temp IS high AND systole IS low AND diastole IS low AND respiration_rate IS high THEN emergency_prediction IS icu;
+    RULE 2 : IF spo2 IS high AND heart_rate IS medium AND body_temp IS medium AND systole IS high AND diastole IS high AND respiration_rate IS high THEN emergency_prediction IS emergency;
+    RULE 3 : IF spo2 IS medium AND heart_rate IS medium AND body_temp IS medium AND systole IS low AND diastole IS low AND respiration_rate IS medium THEN emergency_prediction IS emergency;
+	RULE 4 : IF spo2 IS high AND heart_rate IS medium AND body_temp IS high AND systole IS medium AND diastole IS medium AND respiration_rate IS low THEN emergency_prediction IS emergency;
+    RULE 5 : IF spo2 IS low AND heart_rate IS medium AND body_temp IS high AND systole IS high AND diastole IS high AND respiration_rate IS high THEN emergency_prediction IS icu;
+    RULE 6 : IF spo2 IS low AND heart_rate IS medium AND body_temp IS medium AND systole IS high AND diastole IS high AND respiration_rate IS medium THEN emergency_prediction IS emergency;
+	RULE 7 : IF spo2 IS high AND heart_rate IS medium AND body_temp IS low AND systole IS medium AND diastole IS medium AND respiration_rate IS high THEN emergency_prediction IS healthy;
+    RULE 8 : IF spo2 IS low AND heart_rate IS high AND body_temp IS high AND systole IS medium AND diastole IS medium AND respiration_rate IS medium THEN emergency_prediction IS icu;
+    RULE 9 : IF spo2 IS low AND heart_rate IS high AND body_temp IS medium AND systole IS medium AND diastole IS low AND respiration_rate IS medium THEN emergency_prediction IS icu;
+	RULE 10 : IF spo2 IS high AND heart_rate IS medium AND body_temp IS low AND systole IS medium AND diastole IS medium AND respiration_rate IS medium THEN emergency_prediction IS healthy;
+    RULE 11 : IF spo2 IS medium AND heart_rate IS medium AND body_temp IS high AND systole IS high AND diastole IS high AND respiration_rate IS high THEN emergency_prediction IS icu;
+    RULE 12 : IF spo2 IS low AND heart_rate IS medium AND body_temp IS medium AND systole IS medium AND diastole IS medium AND respiration_rate IS high THEN emergency_prediction IS icu;
+	RULE 13 : IF spo2 IS high AND heart_rate IS high AND body_temp IS low AND systole IS high AND diastole IS medium AND respiration_rate IS medium THEN emergency_prediction IS healthy;
+    RULE 14 : IF spo2 IS low AND heart_rate IS high AND body_temp IS low AND systole IS medium AND diastole IS high AND respiration_rate IS high THEN emergency_prediction IS icu;
+    RULE 15 : IF spo2 IS medium AND heart_rate IS medium AND body_temp IS medium AND systole IS high AND diastole IS high AND respiration_rate IS medium THEN emergency_prediction IS emergency;
+	RULE 16 : IF spo2 IS high AND heart_rate IS medium AND body_temp IS low AND systole IS low AND diastole IS medium AND respiration_rate IS low THEN emergency_prediction IS healthy;
+    RULE 17 : IF spo2 IS low AND heart_rate IS high AND body_temp IS high AND systole IS high AND diastole IS high AND respiration_rate IS high THEN emergency_prediction IS icu;
+    RULE 18 : IF spo2 IS medium AND heart_rate IS high AND body_temp IS medium AND systole IS medium AND diastole IS high AND respiration_rate IS medium THEN emergency_prediction IS emergency;
+	RULE 19 : IF spo2 IS high AND heart_rate IS high AND body_temp IS low AND systole IS high AND diastole IS high AND respiration_rate IS medium THEN emergency_prediction IS healthy;
+    RULE 20 : IF spo2 IS low AND heart_rate IS high AND body_temp IS high AND systole IS high AND diastole IS medium AND respiration_rate IS low THEN emergency_prediction IS icu;
+    RULE 21 : IF spo2 IS high AND heart_rate IS medium AND body_temp IS medium AND systole IS medium AND diastole IS medium AND respiration_rate IS high THEN emergency_prediction IS emergency;
+	RULE 22 : IF spo2 IS low AND heart_rate IS high AND body_temp IS high AND systole IS medium AND diastole IS medium AND respiration_rate IS high THEN emergency_prediction IS icu;
+    RULE 23 : IF spo2 IS medium AND heart_rate IS high AND body_temp IS high AND systole IS high AND diastole IS high AND respiration_rate IS high THEN emergency_prediction IS icu;
+    RULE 24 : IF spo2 IS medium AND heart_rate IS high AND body_temp IS high AND systole IS low AND diastole IS low AND respiration_rate IS high THEN emergency_prediction IS icu;
+	RULE 25 : IF spo2 IS medium AND heart_rate IS high AND body_temp IS high AND systole IS medium AND diastole IS medium AND respiration_rate IS high THEN emergency_prediction IS emergency;
+    RULE 26 : IF spo2 IS high AND heart_rate IS high AND body_temp IS medium AND systole IS medium AND diastole IS medium AND respiration_rate IS high THEN emergency_prediction IS healthy;
+    RULE 27 : IF spo2 IS high AND heart_rate IS medium AND body_temp IS medium AND systole IS medium AND diastole IS medium AND respiration_rate IS medium THEN emergency_prediction IS healthy;
+	RULE 28 : IF spo2 IS high AND heart_rate IS medium AND body_temp IS high AND systole IS medium AND diastole IS medium AND respiration_rate IS medium THEN emergency_prediction IS emergency;
+    RULE 29 : IF spo2 IS high AND heart_rate IS high AND body_temp IS low AND systole IS medium AND diastole IS medium AND respiration_rate IS medium THEN emergency_prediction IS healthy;
+    RULE 30 : IF spo2 IS high AND heart_rate IS high AND body_temp IS medium AND systole IS medium AND diastole IS medium AND respiration_rate IS medium THEN emergency_prediction IS healthy;
+	RULE 31 : IF spo2 IS high AND heart_rate IS high AND body_temp IS high AND systole IS medium AND diastole IS medium AND respiration_rate IS medium THEN emergency_prediction IS healthy;
+	RULE 32 : IF spo2 IS high AND heart_rate IS low AND body_temp IS low AND systole IS medium AND diastole IS medium AND respiration_rate IS medium THEN emergency_prediction IS healthy;
+    RULE 33 : IF spo2 IS low AND heart_rate IS low AND body_temp IS high AND systole IS medium AND diastole IS medium AND respiration_rate IS high THEN emergency_prediction IS icu;
+    RULE 34 : IF spo2 IS low AND heart_rate IS low AND body_temp IS high AND systole IS low AND diastole IS low AND respiration_rate IS high THEN emergency_prediction IS icu;
+	RULE 35 : IF spo2 IS medium AND heart_rate IS low AND body_temp IS high AND systole IS medium AND diastole IS medium AND respiration_rate IS medium THEN emergency_prediction IS emergency;
+    RULE 36 : IF spo2 IS high AND heart_rate IS low AND body_temp IS high AND systole IS medium AND diastole IS medium AND respiration_rate IS medium THEN emergency_prediction IS emergency;
+    RULE 37 : IF spo2 IS low AND heart_rate IS low AND body_temp IS high AND systole IS high AND diastole IS high AND respiration_rate IS high THEN emergency_prediction IS icu;
+	RULE 38 : IF spo2 IS high AND heart_rate IS low AND body_temp IS high AND systole IS medium AND diastole IS medium AND respiration_rate IS medium THEN emergency_prediction IS emergency;
+	RULE 39 : IF spo2 IS low AND heart_rate IS low AND body_temp IS high AND systole IS high AND diastole IS high AND respiration_rate IS high THEN emergency_prediction IS icu;
+	RULE 40 : IF spo2 IS medium AND heart_rate IS high AND body_temp IS medium AND systole IS high AND diastole IS high AND respiration_rate IS high THEN emergency_prediction IS emergency;
+END_RULEBLOCK
+
+END_FUNCTION_BLOCK

@@ -31,9 +31,14 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+    packagingOptions {
+        exclude 'logging.properties'  // Exclude the logging.properties file
+    }
+
 }
 
 dependencies {
+    implementation fileTree(dir: 'libs', include: '*.jar')
     implementation libs.androidx.core.ktx
     implementation libs.androidx.appcompat
     implementation libs.play.services.wearable

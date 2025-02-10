@@ -51,21 +51,41 @@
                 android:layout_marginHorizontal="10dp"
                 >
 
-
-            <TextView
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/cov19_status_healthy"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:layout_marginRight="20dp"
-                android:layout_centerVertical="true"
+                android:orientation="vertical"
                 android:layout_alignParentLeft="true"
-                android:textColor="@color/black"
-                android:id="@+id/txStatus"
+                android:layout_centerVertical="true"
                 >
 
-            </TextView>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/cov19_status_healthy"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:layout_marginBottom="3dp"
+                    android:id="@+id/txStatus"
+                    >
+
+                </TextView>
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="fuzzy value: 0.4"
+                    android:textSize="15dp"
+                    android:textColor="@color/black"
+                    android:id="@+id/txValue"
+                    >
+
+                </TextView>
+
+            </LinearLayout>
+
 
             <Button
                 android:layout_width="wrap_content"
@@ -397,7 +417,7 @@
                         android:textColor="@color/black"
                         android:id="@+id/edtHeartRate"
                         android:textSize="16sp"
-                        android:inputType="number"
+                        android:inputType="numberDecimal"
                         />
                 </LinearLayout>
 
@@ -425,7 +445,7 @@
                         android:textColor="@color/black"
                         android:id="@+id/edtSPO"
                         android:textSize="16sp"
-                        android:inputType="number" />
+                        android:inputType="numberDecimal" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -452,7 +472,7 @@
                         android:textColor="@color/black"
                         android:id="@+id/edtTemp"
                         android:textSize="16sp"
-                        android:inputType="number" />
+                        android:inputType="numberDecimal" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -479,7 +499,7 @@
                         android:textColor="@color/black"
                         android:id="@+id/edtSystole"
                         android:textSize="16sp"
-                        android:inputType="number" />
+                        android:inputType="numberDecimal" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -506,7 +526,7 @@
                         android:textColor="@color/black"
                         android:id="@+id/edtDiastole"
                         android:textSize="16sp"
-                        android:inputType="number" />
+                        android:inputType="numberDecimal" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -533,7 +553,7 @@
                         android:textColor="@color/black"
                         android:id="@+id/edtRespRate"
                         android:textSize="16sp"
-                        android:inputType="number"
+                        android:inputType="numberDecimal"
                         />
                 </LinearLayout>
 

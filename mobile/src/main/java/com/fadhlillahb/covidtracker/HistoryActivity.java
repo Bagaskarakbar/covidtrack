@@ -8,6 +8,7 @@ import android.view.View;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
@@ -47,7 +48,7 @@ public class HistoryActivity extends AppCompatActivity {
 
     private void loadData() {
         Log.d("VIEWTRIGGERED", "LOADING DATA HISTORY RV");
-        vitalSigns.get().addOnCompleteListener(task -> {
+        vitalSigns.orderBy("timestamp", Query.Direction.DESCENDING).get().addOnCompleteListener(task -> {
            if (task.isSuccessful()){
                vitalSignModelList.clear();
                for (QueryDocumentSnapshot document : task.getResult()) {
