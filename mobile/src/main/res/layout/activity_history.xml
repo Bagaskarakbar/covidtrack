@@ -6,7 +6,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#D3D3D3"
-    tools:context=".HistoryActivity"
+    tools:context=".ui.History.HistoryActivity"
+    android:paddingTop="20dp"
+    android:paddingBottom="30dp"
     >
 
     <androidx.recyclerview.widget.RecyclerView

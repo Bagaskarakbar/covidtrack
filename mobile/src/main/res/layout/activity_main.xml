@@ -6,8 +6,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
-    tools:context=".MainActivity"
+    tools:context=".ui.home.MainActivity"
     android:background="#D3D3D3"
+    android:paddingTop="20dp"
+    android:paddingBottom="40dp"
     >
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -57,6 +59,7 @@
                 android:orientation="vertical"
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
+                android:id="@+id/llDesc"
                 >
 
                 <TextView
@@ -88,15 +91,18 @@
 
 
             <Button
+                android:background="@color/design_default_color_primary"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/call_ambulance"
                 android:id="@+id/btnEmergency"
-                android:textSize="16sp"
+                android:textSize="13sp"
                 android:textStyle="bold"
                 android:paddingHorizontal="20dp"
+                android:layout_marginLeft="5dp"
                 android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"
+                android:layout_toRightOf="@+id/llDesc"
                 />
 
             </RelativeLayout>
@@ -314,6 +320,7 @@
                         android:textSize="16sp"
                         android:textStyle="bold"
                         android:textColor="@color/black"
+                        android:layout_marginLeft="3dp"
                         />
                 </LinearLayout>
 
@@ -360,13 +367,12 @@
             android:layout_width="match_parent"
             android:layout_marginHorizontal="30dp"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toTopOf="@id/btnHistory"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/last_vitals_layout"
             android:orientation="vertical"
             android:background="@drawable/rounded_box"
-            android:layout_marginTop="20dp"
+            android:layout_marginVertical="20dp"
             >
 
             <TextView
@@ -385,7 +391,7 @@
 
             <LinearLayout
                 android:id="@+id/layoutvert"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 tools:ignore="UselessParent"
@@ -395,7 +401,7 @@
 
                 <LinearLayout
                     android:id="@+id/layoutHR"
-                    android:layout_width="wrap_content"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
                     <TextView
@@ -409,9 +415,9 @@
                         />
 
                     <EditText
-                        android:layout_width="wrap_content"
+                        android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/insert_or_transfer"
+                        android:hint="0-200"
                         android:importantForAutofill="no"
                         android:textColorHint="#CFDADE"
                         android:textColor="@color/black"
@@ -419,6 +425,8 @@
                         android:textSize="16sp"
                         android:inputType="numberDecimal"
                         />
+
+
                 </LinearLayout>
 
                 <LinearLayout
@@ -439,7 +447,7 @@
                     <EditText
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/insert_or_transfer"
+                        android:hint="0-100"
                         android:importantForAutofill="no"
                         android:textColorHint="#CFDADE"
                         android:textColor="@color/black"
@@ -466,7 +474,7 @@
                     <EditText
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/insert_or_transfer"
+                        android:hint="0-45"
                         android:importantForAutofill="no"
                         android:textColorHint="#CFDADE"
                         android:textColor="@color/black"
@@ -493,7 +501,7 @@
                     <EditText
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/insert_data"
+                        android:hint="90-160"
                         android:importantForAutofill="no"
                         android:textColorHint="#CFDADE"
                         android:textColor="@color/black"
@@ -520,7 +528,7 @@
                     <EditText
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/insert_data"
+                        android:hint="0-120"
                         android:importantForAutofill="no"
                         android:textColorHint="#CFDADE"
                         android:textColor="@color/black"
@@ -547,7 +555,7 @@
                     <EditText
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/insert_data"
+                        android:hint="0-60"
                         android:importantForAutofill="no"
                         android:textColorHint="#CFDADE"
                         android:textColor="@color/black"
@@ -575,20 +583,20 @@
 
         </RelativeLayout>
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/history"
-            android:id="@+id/btnHistory"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            app:layout_constraintTop_toBottomOf="@id/big_layout"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginVertical="20dp"
-            android:paddingHorizontal="40dp"
-            />
+<!--        <Button-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="@string/history"-->
+<!--            android:id="@+id/btnHistory"-->
+<!--            android:textSize="20sp"-->
+<!--            android:textStyle="bold"-->
+<!--            app:layout_constraintTop_toBottomOf="@id/big_layout"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            android:layout_marginVertical="20dp"-->
+<!--            android:paddingHorizontal="40dp"-->
+<!--            />-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

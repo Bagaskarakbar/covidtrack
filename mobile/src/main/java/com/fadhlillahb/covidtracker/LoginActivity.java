@@ -3,16 +3,15 @@ package com.fadhlillahb.covidtracker;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.fadhlillahb.covidtracker.ui.home.MainActivity;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -64,7 +63,7 @@ public class LoginActivity extends AppCompatActivity {
                 session.setUserID(userID);
 
                 Toast.makeText(context, "Login successful", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(context, MainActivity.class);
+                Intent intent = new Intent(context, primaryMenu.class);
                 startActivity(intent);
             } else {
                 Toast.makeText(context, "Login failed", Toast.LENGTH_SHORT).show();

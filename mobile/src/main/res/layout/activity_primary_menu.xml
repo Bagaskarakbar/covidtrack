@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#D3D3D3"
+    >
+
+    <ImageView
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        app:layout_constraintBottom_toTopOf="@id/description"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:id="@+id/logo"
+        android:src="@drawable/covidtrack"
+        >
+    </ImageView>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@id/centering"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:id="@+id/description"
+        android:text="covid infection monitoring and detection application"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        android:textColor="@color/black"
+        android:layout_marginBottom="20dp"
+        >
+
+    </TextView>
+
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:id="@+id/centering"
+        >
+        <Button
+            android:layout_width="110dp"
+            android:layout_height="110dp"
+            android:id="@+id/home"
+            android:layout_marginRight="10dp"
+            android:text="@string/title_home"
+            android:drawableTop="@drawable/ic_home_black_24dp"
+            android:drawableTint="@color/white"
+            android:padding="20dp"
+            android:onClick="gohome"
+            >
+
+        </Button>
+        <Button
+            android:layout_width="110dp"
+            android:layout_height="110dp"
+            android:id="@+id/history"
+            android:layout_toRightOf="@id/home"
+            android:layout_marginRight="10dp"
+            android:text="@string/history"
+            android:drawableTop="@drawable/ic_dashboard_black_24dp"
+            android:drawableTint="@color/white"
+            android:padding="20dp"
+            android:onClick="gohistory"
+            >
+
+        </Button>
+        <Button
+            android:layout_width="110dp"
+            android:layout_height="110dp"
+            android:id="@+id/help"
+            android:layout_toRightOf="@id/history"
+            android:text="@string/about"
+            android:drawableTop="@drawable/baseline_info_24"
+            android:drawableTint="@color/white"
+            android:padding="20dp"
+            android:onClick="goabout"
+            >
+
+
+        </Button>
+
+    </RelativeLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

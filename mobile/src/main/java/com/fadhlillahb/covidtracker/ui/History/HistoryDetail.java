@@ -1,24 +1,15 @@
-package com.fadhlillahb.covidtracker;
+package com.fadhlillahb.covidtracker.ui.History;
 
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
-import android.Manifest;
-import android.content.Context;
 
+import com.fadhlillahb.covidtracker.R;
+import com.fadhlillahb.covidtracker.Session;
 import com.fuzzylite.activation.General;
 import com.fuzzylite.defuzzifier.Centroid;
-import com.fuzzylite.imex.FclImporter;
-import com.fuzzylite.imex.FldExporter;
 import com.fuzzylite.norm.TNorm;
 import com.fuzzylite.norm.s.Maximum;
 import com.fuzzylite.norm.t.AlgebraicProduct;
@@ -28,268 +19,99 @@ import com.fuzzylite.term.Term;
 import com.fuzzylite.term.Trapezoid;
 import com.fuzzylite.variable.InputVariable;
 import com.fuzzylite.variable.OutputVariable;
-import com.fuzzylite.variable.Variable;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.wearable.DataClient;
-import com.google.android.gms.wearable.DataMap;
-import com.google.android.gms.wearable.DataMapItem;
-import com.google.android.gms.wearable.DataEvent;
-import com.google.android.gms.wearable.DataEventBuffer;
-import com.google.android.gms.wearable.DataItem;
-import com.google.android.gms.wearable.Wearable;
+import com.fuzzylite.*;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Locale;
-import java.util.Map;
-import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
-import com.fuzzylite.*;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
+public class HistoryDetail extends AppCompatActivity {
 
-public class MainActivity extends AppCompatActivity implements DataClient.OnDataChangedListener{
+    EditText edtHeartRate, edtSPO, edtTemp, edtSystole, edtDiastole, edtRespRate, edtTimestamp, edtTestID, edtFuzzyValue, edtFuzzy;
 
-    private static final int REQUEST_CALL_PERMISSION = 1;
-    private static final String DATA_PATH = "/data_path"; // Define a specific path for heart rate
-    private static final String KEY_TEMP = "key_temp";
-    private static final String KEY_SPO = "key_spo";
-    private static final String KEY_HR = "key_hr";
-    private static final String TAG = "MOBILE_MAIN";
-    public EditText edtHeartRate, edtSPO, edtTemp, edtSystole, edtDiastole, edtRespRate;
-    public TextView txStatus, txtSPO, txtTemp, txtHeartRate, txtSystole, txtDiastole, txtRespRate, txtTimestamp, txvalue;
-    public Button btnInsert, btnHistory, btnEmergency;
-    public RelativeLayout rlEmergency;
-    public Context context;
-    public Session session;
+    private static final String TAG = "HISTORY_DETAIL";
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
+    CollectionReference vitalSigns = db.collection("vitalSigns");
+    Session session;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        context = this;
 
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_history_detail);
+
         edtHeartRate = findViewById(R.id.edtHeartRate);
         edtSPO = findViewById(R.id.edtSPO);
         edtTemp = findViewById(R.id.edtTemp);
         edtSystole = findViewById(R.id.edtSystole);
         edtDiastole = findViewById(R.id.edtDiastole);
         edtRespRate = findViewById(R.id.edtRespRate);
-        txStatus = findViewById(R.id.txStatus);
-        btnInsert = findViewById(R.id.btnInsert);
-        btnHistory = findViewById(R.id.btnHistory);
-        btnEmergency = findViewById(R.id.btnEmergency);
-        txtHeartRate = findViewById(R.id.txtLastHeartRate);
-        txtSPO = findViewById(R.id.txtLastSPO);
-        txtTemp = findViewById(R.id.txtLastTemp);
-        txtSystole = findViewById(R.id.txtLastSystole);
-        txtDiastole = findViewById(R.id.txtLastDiastole);
-        txtRespRate = findViewById(R.id.txtLastRespRate);
-        txtTimestamp = findViewById(R.id.txtTimestamp);
-        txvalue = findViewById(R.id.txValue);
-        rlEmergency = findViewById(R.id.warning_layout);
-        session = new Session(context);
+        edtTimestamp = findViewById(R.id.edtTimestamp);
+        edtTestID = findViewById(R.id.edtTestID);
+        edtFuzzyValue = findViewById(R.id.edtFuzzyValue);
+        edtFuzzy = findViewById(R.id.edtFuzzy);
+        session = new Session(getApplicationContext());
 
-        String userid = session.getUserID();
-        Log.d("USERIDCHECK", userid);
+        Intent intent = getIntent();
+        String id = intent.getStringExtra("ID");
 
-        btnEmergency.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                callEmergency();
-            }
-        });
+        if (id != null){
+            DocumentReference documentReference = vitalSigns.document(id);
+            documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()){
+                        DocumentSnapshot document = task.getResult();
+                        if (document.exists()){
 
-        btnHistory.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                moveTohistory();
-            }
-        });
+                            String heartRate = String.valueOf(document.get("heartRate"));
+                            String spo2 = String.valueOf(document.get("spo2"));
+                            String temperature = String.valueOf(document.get("temperature"));
+                            String systole = String.valueOf(document.get("systole"));
+                            String diastole = String.valueOf(document.get("diastole"));
+                            String respRate = String.valueOf(document.get("respRate"));
 
-        checklastVital();
-    }
+                            checkfuzzy(Float.parseFloat(heartRate), Float.parseFloat(spo2), Float.parseFloat(temperature), Float.parseFloat(systole), Float.parseFloat(diastole), Float.parseFloat(respRate));
 
+                            edtHeartRate.setText(String.valueOf(document.get("heartRate")));
+                            edtSPO.setText(String.valueOf(document.get("spo2")));
+                            edtTemp.setText(String.valueOf(document.get("temperature")));
+                            edtSystole.setText(String.valueOf(document.get("systole")));
+                            edtDiastole.setText(String.valueOf(document.get("diastole")));
+                            edtRespRate.setText(String.valueOf(document.get("respRate")));
+                            edtTestID.setText(String.valueOf(document.get("testId")));
+                            Date timestamp = document.getTimestamp("timestamp").toDate();
+                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+                            edtTimestamp.setText(sdf.format(timestamp));
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        Wearable.getDataClient(this).addListener(this);
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        Wearable.getDataClient(this).removeListener(this);
-    }
-
-    @Override
-    public void onDataChanged(@NonNull DataEventBuffer dataEvents) {
-        String userid = session.getUserID();
-        for (DataEvent event : dataEvents) {
-            if (event.getType() == DataEvent.TYPE_CHANGED) {
-                DataItem dataItem = event.getDataItem();
-                if (Objects.equals(dataItem.getUri().getPath(), DATA_PATH)) { // Listen for HEART_RATE_PATH
-                    DataMap dataMap = DataMapItem.fromDataItem(dataItem).getDataMap();
-
-                    float temp = dataMap.getFloat(KEY_TEMP); // Retrieve temperature data
-                    int spo = dataMap.getInt(KEY_SPO); // Retrieve SPO2 data
-                    int heartrate = dataMap.getInt(KEY_HR); // Retrieve heart rate data
-
-                    Log.d("MOBILEDATACLIENT", "Received heart rate: " + heartrate + "bpm" + " Temperature: " + temp + "°C" + " SPO2: " + spo);
-
-                    // Update the UI with the received heart rate
-                    runOnUiThread(() -> edtHeartRate.setText(String.valueOf(heartrate)));
-                    runOnUiThread(() -> edtSPO.setText(String.valueOf(spo)));
-                    runOnUiThread(() -> edtTemp.setText(String.valueOf(temp)));
+                            Log.d("LOADEDHISTORY", "id: " + id + ", timestamp: " + timestamp);
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Data not found", Toast.LENGTH_SHORT).show();
+                            Log.d("LOADEDHISTORY", "Data not found");
+                        }
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Error getting data", Toast.LENGTH_SHORT).show();
+                        Log.d("LOADEDHISTORY", "Error getting documents: ", task.getException());
+                    }
                 }
-            }
+            });
         }
-    }
 
-    public void performInsert(View view) {
-        String userid = session.getUserID();
-        if(edtHeartRate.getText().toString().isEmpty() || edtSPO.getText().toString().isEmpty() || edtTemp.getText().toString().isEmpty() || edtSystole.getText().toString().isEmpty() || edtDiastole.getText().toString().isEmpty() || edtRespRate.getText().toString().isEmpty() || edtHeartRate.getText().toString().isEmpty()) {
-            Toast.makeText(this, "Please fill all the fields", Toast.LENGTH_SHORT).show();
-        } else {
-            Map<String, Object> vitalSigns = new HashMap<>();
-
-            vitalSigns.put("heartRate", edtHeartRate.getText().toString());
-            vitalSigns.put("spo2", edtSPO.getText().toString());
-            vitalSigns.put("temperature", edtTemp.getText().toString());
-            vitalSigns.put("systole", edtSystole.getText().toString());
-            vitalSigns.put("diastole", edtDiastole.getText().toString());
-            vitalSigns.put("respRate", edtRespRate.getText().toString());
-            vitalSigns.put("userId", userid);
-            vitalSigns.put("timestamp", FieldValue.serverTimestamp());
-            db.collection("vitalSigns")
-                    .add(vitalSigns)
-                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                        @Override
-                        public void onSuccess(DocumentReference documentReference) {
-                            Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
-                            edtHeartRate.setText("");
-                            edtSPO.setText("");
-                            edtTemp.setText("");
-                            edtSystole.setText("");
-                            edtDiastole.setText("");
-                            edtRespRate.setText("");
-                            Toast.makeText(MainActivity.this, "data added successfully", Toast.LENGTH_SHORT).show();
-                            finish();
-                            startActivity(getIntent());
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Log.w(TAG, "Error adding document", e);
-                            Toast.makeText(MainActivity.this, "Error adding vital signs, try again", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-        }
-    }
-
-    public void moveTohistory() {
-        final Intent intent = new Intent(this, HistoryActivity.class);
-        Log.d("ACTIONCALLED", "history button clicked " + intent.getComponent());
-        startActivity(intent);
-    }
-
-    public void callEmergency() {
-        String emergencyNumber = "tel:119";
-
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE)
-                != PackageManager.PERMISSION_GRANTED) {
-            // Request permission if not already granted
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.CALL_PHONE}, REQUEST_CALL_PERMISSION);
-        } else {
-            // Start the call if permission is granted
-            Intent callIntent = new Intent(Intent.ACTION_CALL);
-            callIntent.setData(Uri.parse(emergencyNumber));
-            startActivity(callIntent);
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == REQUEST_CALL_PERMISSION) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                callEmergency();
-            } else {
-                Toast.makeText(this, "Call permission denied", Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
-
-    public void checklastVital(){
-        CollectionReference lastVital = db.collection("vitalSigns");
-        String userid = session.getUserID();
-
-        lastVital.orderBy("timestamp", Query.Direction.DESCENDING).limit(1).get().addOnCompleteListener(task -> {
-            if (task.isSuccessful() && !task.getResult().getDocuments().isEmpty()){
-                DocumentSnapshot vitals = task.getResult().getDocuments().get(0);
-
-                txtHeartRate.setText(String.valueOf(vitals.get("heartRate")));
-                txtSPO.setText(String.valueOf(vitals.get("spo2")));
-                txtTemp.setText(String.valueOf(vitals.get("temperature")));
-                txtSystole.setText(String.valueOf(vitals.get("systole")));
-                txtDiastole.setText(String.valueOf(vitals.get("diastole")));
-                txtRespRate.setText(String.valueOf(vitals.get("respRate")));
-                Date timestamp = vitals.getTimestamp("timestamp").toDate();
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
-                txtTimestamp.setText(sdf.format(timestamp));
-
-                String heartRate = String.valueOf(vitals.get("heartRate"));
-                String spo2 = String.valueOf(vitals.get("spo2"));
-                String temperature = String.valueOf(vitals.get("temperature"));
-                String systole = String.valueOf(vitals.get("systole"));
-                String diastole = String.valueOf(vitals.get("diastole"));
-                String respRate = String.valueOf(vitals.get("respRate"));
-
-                checkfuzzy(Float.parseFloat(heartRate), Float.parseFloat(spo2), Float.parseFloat(temperature), Float.parseFloat(systole), Float.parseFloat(diastole), Float.parseFloat(respRate));
-
-                Log.d("LOADEDHISTORY", "id: " + vitals.getId() + ", timestamp: " + timestamp);
-
-            } else {
-                Log.d("LOADEDHISTORY", "Data not found");
-                Toast.makeText(getApplicationContext(), "Data not found, Please insert data first", Toast.LENGTH_SHORT).show();
-                txtHeartRate.setText("-");
-                txtSPO.setText("-");
-                txtTemp.setText("-");
-                txtSystole.setText("-");
-                txtDiastole.setText("-");
-                txtRespRate.setText("-");
-                txtTimestamp.setText("-");
-            }
-        });
     }
 
     public void checkfuzzy(float heartrate, float spo2, float temperature, float systole, float diastole, float respRate) {
-        Log.d("FUZZYINPUTS", String.valueOf("heart_rate: " + heartrate + ", spo2: " + spo2 + ", temperature: " + temperature + ", systole: " + systole + ", diastole: " + diastole + ", resp_rate: " + respRate));
+        Log.d("FUZZYINPUTSONHISTORY", String.valueOf("heart_rate: " + heartrate + ", spo2: " + spo2 + ", temperature: " + temperature + ", systole: " + systole + ", diastole: " + diastole + ", resp_rate: " + respRate));
 
         Engine prediction = new Engine();
         prediction.setName("covid_indentification");
@@ -419,6 +241,30 @@ public class MainActivity extends AppCompatActivity implements DataClient.OnData
         mamdani.addRule(Rule.parse("if spo2 is high and heart_rate is low and body_temp is high and systole is medium and diastole is medium and respiration_rate is medium then emergency_prediction is emergency",prediction));
         mamdani.addRule(Rule.parse("if spo2 is low and heart_rate is low and body_temp is high and systole is high and diastole is high and respiration_rate is high then emergency_prediction is icu",prediction));
         mamdani.addRule(Rule.parse("if spo2 is medium and heart_rate is high and body_temp is medium and systole is high and diastole is high and respiration_rate is high then emergency_prediction is emergency",prediction));
+        mamdani.addRule(Rule.parse("if spo2 is low and heart_rate is medium and body_temp is low and systole is high and diastole is high and respiration_rate is high then emergency_prediction is emergency",prediction));
+        mamdani.addRule(Rule.parse("if spo2 is medium and heart_rate is medium and body_temp is low and systole is high and diastole is medium and respiration_rate is medium then emergency_prediction is emergency",prediction));
+        mamdani.addRule(Rule.parse("if spo2 is medium and heart_rate is medium and body_temp is high and systole is high and diastole is medium and respiration_rate is medium then emergency_prediction is icu",prediction));
+        mamdani.addRule(Rule.parse("if spo2 is high and heart_rate is medium and body_temp is low and systole is high and diastole is high and respiration_rate is medium then emergency_prediction is emergency",prediction));
+        mamdani.addRule(Rule.parse("if spo2 is medium and heart_rate is high and body_temp is high and systole is medium and diastole is high and respiration_rate is high then emergency_prediction is emergency",prediction));
+        mamdani.addRule(Rule.parse("if spo2 is high and heart_rate is medium and body_temp is high and systole is high and diastole is medium and respiration_rate is medium then emergency_prediction is healthy",prediction));
+        mamdani.addRule(Rule.parse("if spo2 is high and heart_rate is medium and body_temp is high and systole is high and diastole is high and respiration_rate is medium then emergency_prediction is emergency",prediction));
+        mamdani.addRule(Rule.parse("if spo2 is high and heart_rate is medium and body_temp is high and systole is high and diastole is medium and respiration_rate is medium then emergency_prediction is icu",prediction));
+        mamdani.addRule(Rule.parse("if spo2 is medium and heart_rate is medium and body_temp is high and systole is high and diastole is medium and respiration_rate is low then emergency_prediction is icu",prediction));
+        mamdani.addRule(Rule.parse("if spo2 is medium and heart_rate is medium and body_temp is high and systole is high and diastole is medium and respiration_rate is high then emergency_prediction is icu",prediction));
+        mamdani.addRule(Rule.parse("if spo2 is medium and heart_rate is medium and body_temp is low and systole is high and diastole is high and respiration_rate is medium then emergency_prediction is icu",prediction));
+        mamdani.addRule(Rule.parse("if spo2 is high and heart_rate is medium and body_temp is low and systole is medium and diastole is low and respiration_rate is medium then emergency_prediction is icu",prediction));
+        mamdani.addRule(Rule.parse("if spo2 is high and heart_rate is medium and body_temp is low and systole is medium and diastole is low and respiration_rate is medium then emergency_prediction is emergency",prediction));
+        mamdani.addRule(Rule.parse("if spo2 is low and heart_rate is high and body_temp is low and systole is medium and diastole is medium and respiration_rate is medium then emergency_prediction is healthy",prediction));
+        mamdani.addRule(Rule.parse("if spo2 is low and heart_rate is high and body_temp is low and systole is medium and diastole is medium and respiration_rate is medium then emergency_prediction is healthy",prediction));
+        mamdani.addRule(Rule.parse("if spo2 is medium and heart_rate is high and body_temp is high and systole is high and diastole is medium and respiration_rate is high then emergency_prediction is icu",prediction));
+        mamdani.addRule(Rule.parse("if spo2 is low and heart_rate is high and body_temp is high and systole is high and diastole is medium and respiration_rate is medium then emergency_prediction is icu",prediction));
+        mamdani.addRule(Rule.parse("if spo2 is low and heart_rate is medium and body_temp is high and systole is medium and diastole is high and respiration_rate is medium then emergency_prediction is icu",prediction));
+        mamdani.addRule(Rule.parse("if spo2 is low and heart_rate is medium and body_temp is low and systole is high and diastole is high and respiration_rate is medium then emergency_prediction is icu",prediction));
+        mamdani.addRule(Rule.parse("if spo2 is high and heart_rate is medium and body_temp is low and systole is high and diastole is medium and respiration_rate is medium then emergency_prediction is healthy",prediction));
+        mamdani.addRule(Rule.parse("if spo2 is low and heart_rate is medium and body_temp is high and systole is high and diastole is medium and respiration_rate is high then emergency_prediction is icu",prediction));
+        mamdani.addRule(Rule.parse("if spo2 is low and heart_rate is medium and body_temp is high and systole is medium and diastole is low and respiration_rate is medium then emergency_prediction is icu",prediction));
+        mamdani.addRule(Rule.parse("if spo2 is low and heart_rate is medium and body_temp is high and systole is medium and diastole is low and respiration_rate is medium then emergency_prediction is icu",prediction));
+        mamdani.addRule(Rule.parse("if spo2 is low and heart_rate is medium and body_temp is high and systole is medium and diastole is low and respiration_rate is medium then emergency_prediction is icu",prediction));
         prediction.addRuleBlock(mamdani);
 
         StringBuilder status = new StringBuilder();
@@ -447,7 +293,6 @@ public class MainActivity extends AppCompatActivity implements DataClient.OnData
 
         String bestTermName = null;
 
-
         double maxDegree = 0.0;
 
         for (Term term : emergency.getTerms()) {
@@ -464,23 +309,21 @@ public class MainActivity extends AppCompatActivity implements DataClient.OnData
         if (bestTermName != null) {
             switch (bestTermName){
                 case "healthy":
-                    txStatus.setText(R.string.cov19_status_healthy);
-                    txvalue.setText("fuzzy value : " + String.format("%.2f", predictionValue));
-                    rlEmergency.setBackgroundResource(R.drawable.rounded_ok);
+                    edtFuzzy.setText(R.string.cov19_status_healthy);
+                    edtFuzzyValue.setText(String.format("%.2f", predictionValue));
                     break;
                 case "icu":
-                    txStatus.setText(R.string.cov19_status_EMERGENCY);
-                    txvalue.setText("fuzzy value : " + String.format("%.2f", predictionValue));
-                    rlEmergency.setBackgroundResource(R.drawable.rounded_emergency);
+                    edtFuzzy.setText(R.string.cov19_status_EMERGENCY);
+                    edtFuzzyValue.setText(String.format("%.2f", predictionValue));
                     break;
                 case "emergency":
-                    txStatus.setText(R.string.cov19_status_warning);
-                    txvalue.setText("fuzzy value : " + String.format("%.2f", predictionValue));
-                    rlEmergency.setBackgroundResource(R.drawable.rounded_warning);
+                    edtFuzzy.setText(R.string.cov19_status_warning);
+                    edtFuzzyValue.setText(String.format("%.2f", predictionValue));
                     break;
                 default:
-                break;
+                    break;
             }
         }
     }
-    }
+}
+

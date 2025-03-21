@@ -1,4 +1,4 @@
-package com.fadhlillahb.covidtracker;
+package com.fadhlillahb.covidtracker.ui.History;
 
 import android.util.Log;
 import android.view.GestureDetector;
@@ -9,9 +9,9 @@ import android.view.ViewGroup;
 import android.content.Context;
 import android.widget.TextView;
 
-import com.google.type.DateTime;
+import com.fadhlillahb.covidtracker.R;
+import com.fadhlillahb.covidtracker.VitalSignModel;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;

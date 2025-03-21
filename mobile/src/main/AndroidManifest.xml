@@ -12,14 +12,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Covidtracker"
         tools:targetApi="31">
-        <activity
-            android:name=".MainActivity">
-        </activity>
-        <activity android:name=".HistoryActivity" />
-        <activity android:name=".HistoryDetail" />
+        <activity android:name=".ui.History.HistoryActivity" />
+        <activity android:name=".ui.History.HistoryDetail" />
         <activity android:name=".RegisterActivity">
         </activity>
         <activity android:name=".LoginActivity"  android:exported="true">
+        </activity>
+        <activity android:name=".menuController" android:exported="true">
+        </activity>
+        <activity android:name=".primaryMenu" android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

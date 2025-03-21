@@ -1,0 +1,179 @@
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="#D3D3D3"
+    >
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#D3D3D3">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:paddingVertical="40dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:id="@+id/centering"
+        >
+
+        <RelativeLayout
+            android:id="@+id/aboutApp"
+            android:layout_width="match_parent"
+            android:layout_marginHorizontal="30dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@id/appGuide"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:orientation="vertical"
+            android:background="@drawable/rounded_box"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="About"
+                android:textSize="24sp"
+                android:layout_centerHorizontal="true"
+                android:textStyle="bold"
+                android:id="@+id/txAboutTitle"
+                android:layout_marginTop="20dp"
+                android:textColor="@color/black"
+                >
+
+            </TextView>
+
+            <LinearLayout
+                android:id="@+id/layoutAbout"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                tools:ignore="UselessParent"
+                android:layout_margin="10dp"
+                android:layout_below="@id/txAboutTitle"
+                >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:justificationMode="inter_word"
+                    android:text="This application is started as a research material for master studies regarding the viability of the utilization of wearable devices that is used along a mobile application to monitor Covid-19 patient in self-isolation. This research results could be found on SciHub's journal of computer science on (doi link)."
+                    android:textSize="18sp"
+                    android:id="@+id/txAbout"
+                    android:textColor="@color/black"
+                    android:layout_gravity="fill_horizontal"
+                    >
+
+                </TextView>
+
+<!--                <ImageView-->
+<!--                    android:layout_width="120dp"-->
+<!--                    android:layout_height="100dp"-->
+<!--                    android:src="@drawable/logo_binus"-->
+<!--                    android:layout_gravity="center_horizontal"-->
+<!--                    ></ImageView>-->
+
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/appGuide"
+            android:layout_width="match_parent"
+            android:layout_marginHorizontal="30dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/aboutApp"
+            android:orientation="vertical"
+            android:background="@drawable/rounded_box"
+            android:layout_marginTop="20dp"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="How to use this app?"
+                android:textSize="22sp"
+                android:layout_centerHorizontal="true"
+                android:textStyle="bold"
+                android:id="@+id/txTitle"
+                android:layout_marginTop="20dp"
+                android:textColor="@color/black"
+                >
+
+            </TextView>
+
+            <LinearLayout
+                android:id="@+id/layoutvert"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                tools:ignore="UselessParent"
+                android:layout_margin="10dp"
+                android:layout_below="@id/txTitle"
+                >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:justificationMode="inter_word"
+                    android:text="Insert the vital sign of the patient, then the application will identify the patient's Covid-19 severity based on the output of fuzzy logic's crisp value output."
+                    android:textSize="18sp"
+                    android:id="@+id/txHelpDesc"
+                    android:textColor="@color/black"
+                    android:layout_gravity="fill_horizontal"
+                    >
+
+                </TextView>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:justificationMode="inter_word"
+                    android:layout_marginVertical="7dp"
+                    android:text="This application could also be used along with a samsung wearable application. for more information regarding the application please contact bagaskara.fadhlillah@binus.ac.id"
+                    android:textSize="16sp"
+                    android:id="@+id/txadditional"
+                    android:textColor="@color/black"
+                    android:layout_gravity="fill_horizontal"
+                    >
+
+                </TextView>
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:justificationMode="inter_word"
+                    android:text="notice: all of the vital signs are required to be filled so that the application can work properly."
+                    android:textSize="14sp"
+                    android:layout_marginTop="3dp"
+                    android:id="@+id/txNotice"
+                    android:textColor="@color/design_default_color_primary"
+                    android:layout_gravity="fill_horizontal"
+                    >
+
+                </TextView>
+
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

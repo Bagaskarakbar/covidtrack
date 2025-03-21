@@ -34,7 +34,9 @@ android {
     packagingOptions {
         exclude 'logging.properties'  // Exclude the logging.properties file
     }
-
+    buildFeatures {
+        viewBinding = true
+    }
 }
 
 dependencies {
@@ -50,6 +52,14 @@ dependencies {
     implementation 'com.google.android.gms:play-services-tasks:18.0.0'
     implementation libs.firebase.firestore
     implementation libs.androidx.media3.common
+    implementation libs.androidx.navigation.fragment
+
+    implementation libs.lifecycle.livedata
+    implementation libs.lifecycle.viewmodel
+    implementation libs.lifecycle.runtime
+
+    implementation libs.navigation.fragment
+    implementation libs.navigation.ui
 
     testImplementation libs.junit
     androidTestImplementation libs.androidx.junit

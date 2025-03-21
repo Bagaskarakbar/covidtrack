@@ -26,4 +26,11 @@
     <string name="deg_celcius">°C</string>
     <string name="datetime_dummy">dd/mm/yyyy</string>
     <string name="extracted_at">Extracted at </string>
+    <string name="testid">testID:</string>
+    <string name="fuzzy_value">fuzzy value</string>
+    <string name="status_pasien">status pasien :</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="about">About</string>
 </resources>
