@@ -34,6 +34,9 @@ https://github.com/Bagaskarakbar/covidtrack/blob/afa18c31029667715a7c8d15b1921b4
 If you find a security vulnerability on the application or have any inquiries on how the app protects your privacy, feel free to contact me.
 
 Sincerely,
+
 RIG
+
 Jakarta, Indonesia.
+
 ditditnutama@gmail.com
