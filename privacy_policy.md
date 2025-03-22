@@ -2,7 +2,7 @@
 
 Welcome to Covid Track, a Covid-19 monitoring system for Android and samsung wearable
 
-this is a personal project developed by Bagaskara Akbar Fadhlillah for thesis purposes of a post-graduate degree. The application uses third party SDKs such as Samsung health SDK and Fuzzylite, all rights reserved.
+this is a personal project developed by Bagaskara Akbar Fadhlillah for thesis purposes of a post-graduate degree, which is then published with the RIG team. The application uses third party SDKs such as Samsung health SDK and Fuzzylite, all rights reserved.
 
 As an android developer i am required to state the privacy policy of the app i am using. the details of the privacy policy is as follows.
 
@@ -34,6 +34,6 @@ https://github.com/Bagaskarakbar/covidtrack/blob/afa18c31029667715a7c8d15b1921b4
 If you find a security vulnerability on the application or have any inquiries on how the app protects your privacy, feel free to contact me.
 
 Sincerely,
-Bagaskara Akbar Fadhlillah
+RIG
 Jakarta, Indonesia.
-bagaskara.fadhlillah@binus.ac.id
+ditditnutama@gmail.com
