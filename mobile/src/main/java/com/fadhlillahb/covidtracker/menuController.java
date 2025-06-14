@@ -1,10 +1,12 @@
 package com.fadhlillahb.covidtracker;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -21,12 +23,10 @@ public class menuController extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        int intentFragment = getIntent().getExtras().getInt("frgToLoad");
-
         binding = MenuControllerBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        BottomNavigationView navView = findViewById(R.id.nav_view);
+        BottomNavigationView navView = binding.navView;
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
@@ -34,20 +34,36 @@ public class menuController extends AppCompatActivity {
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
 
-        switch (intentFragment){
+        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+        NavigationUI.setupWithNavController(navView, navController);
+
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                Intent i = new Intent(menuController.this, primaryMenu.class);
+                i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(i);
+                finish(); // optional
+            }
+        });
+
+        int intentFragment = getIntent().getIntExtra("frgToLoad",1);
+
+        switch (intentFragment) {
             case 1:
-                navController.navigate(R.id.navigation_home);
+                navView.setSelectedItemId(R.id.navigation_home);
                 break;
             case 2:
-                navController.navigate(R.id.navigation_dashboard);
+                navView.setSelectedItemId(R.id.navigation_dashboard);
                 break;
             case 3:
-                navController.navigate(R.id.navigation_notifications);
+                navView.setSelectedItemId(R.id.navigation_notifications);
                 break;
         }
 
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
-        NavigationUI.setupWithNavController(binding.navView, navController);
+        NavigationUI.setupWithNavController(navView, navController);
 
     }
+
 }

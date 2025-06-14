@@ -12,7 +12,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Covidtracker"
         tools:targetApi="31">
-        <activity android:name=".ui.History.HistoryActivity" />
         <activity android:name=".ui.History.HistoryDetail" />
         <activity android:name=".RegisterActivity">
         </activity>
@@ -35,6 +34,5 @@
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
 
 </manifest>

@@ -16,6 +16,7 @@ import android.widget.Toast;
 import android.Manifest;
 import android.content.Context;
 
+import com.fadhlillahb.covidtracker.FirebaseCryptoHelper;
 import com.fadhlillahb.covidtracker.ui.History.HistoryActivity;
 import com.fadhlillahb.covidtracker.R;
 import com.fadhlillahb.covidtracker.Session;
@@ -182,18 +183,42 @@ public class MainActivity extends Fragment implements DataClient.OnDataChangedLi
     }
 
     public void performInsert(View view) {
-        String userid = "1bVNU0sQ5zBAmD9o0XJV";
-        if(edtHeartRate.getText().toString().isEmpty() || edtSPO.getText().toString().isEmpty() || edtTemp.getText().toString().isEmpty() || edtSystole.getText().toString().isEmpty() || edtDiastole.getText().toString().isEmpty() || edtRespRate.getText().toString().isEmpty() || edtHeartRate.getText().toString().isEmpty()) {
-            Toast.makeText(getActivity(), "Please fill all the fields", Toast.LENGTH_SHORT).show();
-        } else {
-            Map<String, Object> vitalSigns = new HashMap<>();
 
-            vitalSigns.put("heartRate", edtHeartRate.getText().toString());
-            vitalSigns.put("spo2", edtSPO.getText().toString());
-            vitalSigns.put("temperature", edtTemp.getText().toString());
-            vitalSigns.put("systole", edtSystole.getText().toString());
-            vitalSigns.put("diastole", edtDiastole.getText().toString());
-            vitalSigns.put("respRate", edtRespRate.getText().toString());
+        String hr = edtHeartRate.getText().toString();
+        String spo = edtSPO.getText().toString();
+        String temp = edtTemp.getText().toString();
+        String systole = edtSystole.getText().toString();
+        String diastole = edtDiastole.getText().toString();
+        String respRate = edtRespRate.getText().toString();
+
+
+        String userid = "1bVNU0sQ5zBAmD9o0XJV";
+        if(hr.isEmpty() || edtSPO.getText().toString().isEmpty() || spo.isEmpty() || edtSystole.getText().toString().isEmpty() || temp.isEmpty() || systole.isEmpty() || diastole.isEmpty() || respRate.isEmpty()) {
+            Toast.makeText(getActivity(), "Please fill all the fields", Toast.LENGTH_SHORT).show();
+        } else if(Float.valueOf(hr) < 0 || Float.valueOf(hr) > 200 || Float.valueOf(spo) < 0 || Float.valueOf(spo) > 100 || Float.valueOf(temp) < 0 || Float.valueOf(temp) > 45 || Float.valueOf(systole) < 90 || Float.valueOf(systole) > 160 || Float.valueOf(diastole) < 0 || Float.valueOf(diastole) > 120 || Float.valueOf(respRate) < 0 || Float.valueOf(respRate) > 60){
+            Toast.makeText(getActivity(), "Please fill the fields with correct values", Toast.LENGTH_SHORT).show();
+        }else {
+            Map<String, Object> vitalSigns = new HashMap<>();
+            try {
+                FirebaseCryptoHelper crypto = new FirebaseCryptoHelper();
+                vitalSigns.put("heartRate", crypto.encrypt(edtHeartRate.getText().toString()));
+                vitalSigns.put("spo2", crypto.encrypt(edtSPO.getText().toString()));
+                vitalSigns.put("temperature", crypto.encrypt(edtTemp.getText().toString()));
+                vitalSigns.put("systole", crypto.encrypt(edtSystole.getText().toString()));
+                vitalSigns.put("diastole", crypto.encrypt(edtDiastole.getText().toString()));
+                vitalSigns.put("respRate", crypto.encrypt(edtRespRate.getText().toString()));
+            } catch (Exception e) {
+                e.printStackTrace();
+                Toast.makeText(getActivity(), "Encryption failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+//            vitalSigns.put("heartRate", edtHeartRate.getText().toString());
+//            vitalSigns.put("spo2", edtSPO.getText().toString());
+//            vitalSigns.put("temperature", edtTemp.getText().toString());
+//            vitalSigns.put("systole", edtSystole.getText().toString());
+//            vitalSigns.put("diastole", edtDiastole.getText().toString());
+//            vitalSigns.put("respRate", edtRespRate.getText().toString());
             vitalSigns.put("userId", userid);
             vitalSigns.put("timestamp", FieldValue.serverTimestamp());
             db.collection("vitalSigns")
@@ -209,6 +234,8 @@ public class MainActivity extends Fragment implements DataClient.OnDataChangedLi
                             edtDiastole.setText("");
                             edtRespRate.setText("");
                             Toast.makeText(getActivity(), "data added successfully", Toast.LENGTH_SHORT).show();
+
+
                             getActivity().getSupportFragmentManager().beginTransaction().detach(MainActivity.this).attach(MainActivity.this).commit();
                         }
                     })
@@ -256,35 +283,50 @@ public class MainActivity extends Fragment implements DataClient.OnDataChangedLi
         }
     }
 
-    public void checklastVital(){
+    public void checklastVital() {
         CollectionReference lastVital = db.collection("vitalSigns");
         String userid = session.getUserID();
 
-//        lastVital.orderBy("timestamp", Query.Direction.DESCENDING).whereEqualTo("userid",userid).limit(1).get().addOnCompleteListener(task -> {
         lastVital.orderBy("timestamp", Query.Direction.DESCENDING).limit(1).get().addOnCompleteListener(task -> {
-            if (task.isSuccessful() && !task.getResult().getDocuments().isEmpty()){
+            if (task.isSuccessful() && !task.getResult().getDocuments().isEmpty()) {
                 DocumentSnapshot vitals = task.getResult().getDocuments().get(0);
 
-                txtHeartRate.setText(String.valueOf(vitals.get("heartRate")));
-                txtSPO.setText(String.valueOf(vitals.get("spo2")));
-                txtTemp.setText(String.valueOf(vitals.get("temperature")));
-                txtSystole.setText(String.valueOf(vitals.get("systole")));
-                txtDiastole.setText(String.valueOf(vitals.get("diastole")));
-                txtRespRate.setText(String.valueOf(vitals.get("respRate")));
-                Date timestamp = vitals.getTimestamp("timestamp").toDate();
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
-                txtTimestamp.setText(sdf.format(timestamp));
+                try {
+                    FirebaseCryptoHelper crypto = new FirebaseCryptoHelper();
 
-                String heartRate = String.valueOf(vitals.get("heartRate"));
-                String spo2 = String.valueOf(vitals.get("spo2"));
-                String temperature = String.valueOf(vitals.get("temperature"));
-                String systole = String.valueOf(vitals.get("systole"));
-                String diastole = String.valueOf(vitals.get("diastole"));
-                String respRate = String.valueOf(vitals.get("respRate"));
+                    String decryptedHeartRate = crypto.decrypt(String.valueOf(vitals.get("heartRate")));
+                    String decryptedSPO2 = crypto.decrypt(String.valueOf(vitals.get("spo2")));
+                    String decryptedTemp = crypto.decrypt(String.valueOf(vitals.get("temperature")));
+                    String decryptedSystole = crypto.decrypt(String.valueOf(vitals.get("systole")));
+                    String decryptedDiastole = crypto.decrypt(String.valueOf(vitals.get("diastole")));
+                    String decryptedRespRate = crypto.decrypt(String.valueOf(vitals.get("respRate")));
 
-                checkfuzzy(Float.parseFloat(heartRate), Float.parseFloat(spo2), Float.parseFloat(temperature), Float.parseFloat(systole), Float.parseFloat(diastole), Float.parseFloat(respRate));
+                    txtHeartRate.setText(decryptedHeartRate);
+                    txtSPO.setText(decryptedSPO2);
+                    txtTemp.setText(decryptedTemp);
+                    txtSystole.setText(decryptedSystole);
+                    txtDiastole.setText(decryptedDiastole);
+                    txtRespRate.setText(decryptedRespRate);
 
-                Log.d("LOADEDHISTORY", "id: " + vitals.getId() + ", timestamp: " + timestamp);
+                    checkfuzzy(
+                            Float.parseFloat(decryptedHeartRate),
+                            Float.parseFloat(decryptedSPO2),
+                            Float.parseFloat(decryptedTemp),
+                            Float.parseFloat(decryptedSystole),
+                            Float.parseFloat(decryptedDiastole),
+                            Float.parseFloat(decryptedRespRate)
+                    );
+
+                    Date timestamp = vitals.getTimestamp("timestamp").toDate();
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+                    txtTimestamp.setText(sdf.format(timestamp));
+
+                    Log.d("LOADEDHISTORY", "id: " + vitals.getId() + ", timestamp: " + timestamp);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Toast.makeText(getActivity(), "Decryption error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
 
             } else {
                 Log.d("LOADEDHISTORY", "Data not found");

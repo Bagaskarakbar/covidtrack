@@ -403,7 +403,9 @@
                     android:id="@+id/layoutHR"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="4dp"
+                    >
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -414,17 +416,37 @@
                         android:textColor="@color/black"
                         />
 
-                    <EditText
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:hint="0-200"
-                        android:importantForAutofill="no"
-                        android:textColorHint="#CFDADE"
-                        android:textColor="@color/black"
-                        android:id="@+id/edtHeartRate"
-                        android:textSize="16sp"
-                        android:inputType="numberDecimal"
-                        />
+                        android:layout_marginStart="5dp"
+                        android:layout_marginEnd="5dp"
+                        android:textColorHint="@color/purple_500"
+                        android:hint="0-200 BPM"
+                        app:boxCornerRadiusBottomEnd="5dp"
+                        app:boxCornerRadiusBottomStart="5dp"
+                        app:boxCornerRadiusTopEnd="5dp"
+                        app:boxCornerRadiusTopStart="5dp"
+                        android:background="@drawable/inputbg"
+                        >
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:textAppearance="@style/TextAppearance.Material3.HeadlineMedium"
+                            android:id="@+id/edtHeartRate"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:textSize="16sp"
+                            android:inputType="numberDecimal"
+                            tools:ignore="KeyboardInaccessibleWidget"
+                            android:textColor="@color/black"
+                            app:hintTextColor="@color/purple_500"
+                            />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
 
 
                 </LinearLayout>
@@ -433,7 +455,9 @@
                     android:id="@+id/layoutSPO"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="4dp"
+                    >
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -444,23 +468,43 @@
                         android:textColor="@color/black"
                         />
 
-                    <EditText
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:hint="0-100"
-                        android:importantForAutofill="no"
-                        android:textColorHint="#CFDADE"
-                        android:textColor="@color/black"
-                        android:id="@+id/edtSPO"
-                        android:textSize="16sp"
-                        android:inputType="numberDecimal" />
+                        android:layout_marginStart="5dp"
+                        android:layout_marginEnd="5dp"
+                        android:hint="0-100 %"
+                        app:boxCornerRadiusBottomEnd="5dp"
+                        app:boxCornerRadiusBottomStart="5dp"
+                        app:boxCornerRadiusTopEnd="5dp"
+                        app:boxCornerRadiusTopStart="5dp"
+                        android:textColorHint="@color/purple_500"
+                        android:background="@drawable/inputbg"
+                        >
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/edtSPO"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:textSize="16sp"
+                            android:inputType="numberDecimal"
+                            tools:ignore="KeyboardInaccessibleWidget"
+                            android:textColor="@color/black"
+                            />
+
+                    </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/layoutTemp"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="4dp"
+                    >
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -471,23 +515,43 @@
                         android:textColor="@color/black"
                         />
 
-                    <EditText
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:hint="0-45"
-                        android:importantForAutofill="no"
-                        android:textColorHint="#CFDADE"
-                        android:textColor="@color/black"
-                        android:id="@+id/edtTemp"
-                        android:textSize="16sp"
-                        android:inputType="numberDecimal" />
+                        android:layout_marginStart="5dp"
+                        android:layout_marginEnd="5dp"
+                        android:hint="0-45 °C"
+                        app:boxCornerRadiusBottomEnd="5dp"
+                        app:boxCornerRadiusBottomStart="5dp"
+                        app:boxCornerRadiusTopEnd="5dp"
+                        app:boxCornerRadiusTopStart="5dp"
+                        android:textColorHint="@color/purple_500"
+                        android:background="@drawable/inputbg"
+                        >
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/edtTemp"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:textSize="16sp"
+                            android:inputType="numberDecimal"
+                            tools:ignore="KeyboardInaccessibleWidget"
+                            android:textColor="@color/black"
+                            />
+
+                    </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/layoutSystole"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="4dp"
+                    >
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -498,23 +562,43 @@
                         android:textColor="@color/black"
                         />
 
-                    <EditText
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:hint="90-160"
-                        android:importantForAutofill="no"
-                        android:textColorHint="#CFDADE"
-                        android:textColor="@color/black"
-                        android:id="@+id/edtSystole"
-                        android:textSize="16sp"
-                        android:inputType="numberDecimal" />
+                        android:layout_marginStart="5dp"
+                        android:layout_marginEnd="5dp"
+                        android:hint="90-160 mmhg"
+                        app:boxCornerRadiusBottomEnd="5dp"
+                        app:boxCornerRadiusBottomStart="5dp"
+                        app:boxCornerRadiusTopEnd="5dp"
+                        app:boxCornerRadiusTopStart="5dp"
+                        android:textColorHint="@color/purple_500"
+                        android:background="@drawable/inputbg"
+                        >
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/edtSystole"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:inputType="numberDecimal"
+                            android:maxLines="1"
+                            android:textSize="16sp"
+                            tools:ignore="KeyboardInaccessibleWidget"
+                            android:textColor="@color/black"
+                            />
+
+                    </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/layoutDiastole"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="4dp"
+                    >
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -525,16 +609,33 @@
                         android:textColor="@color/black"
                         />
 
-                    <EditText
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:hint="0-120"
-                        android:importantForAutofill="no"
-                        android:textColorHint="#CFDADE"
-                        android:textColor="@color/black"
-                        android:id="@+id/edtDiastole"
-                        android:textSize="16sp"
-                        android:inputType="numberDecimal" />
+                        android:layout_marginStart="5dp"
+                        android:layout_marginEnd="5dp"
+                        android:hint="0-120 mmhg"
+                        app:boxCornerRadiusBottomEnd="5dp"
+                        app:boxCornerRadiusBottomStart="5dp"
+                        app:boxCornerRadiusTopEnd="5dp"
+                        app:boxCornerRadiusTopStart="5dp"
+                        android:textColorHint="@color/purple_500"
+                        android:background="@drawable/inputbg"
+                        >
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:textColor="@color/black"
+                            android:id="@+id/edtDiastole"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:textSize="16sp"
+                            android:inputType="numberDecimal"
+                            tools:ignore="KeyboardInaccessibleWidget" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
 
                 <LinearLayout
@@ -551,18 +652,33 @@
                         android:textStyle="bold"
                         android:textColor="@color/black"
                         />
-
-                    <EditText
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:hint="0-60"
-                        android:importantForAutofill="no"
-                        android:textColorHint="#CFDADE"
-                        android:textColor="@color/black"
-                        android:id="@+id/edtRespRate"
-                        android:textSize="16sp"
-                        android:inputType="numberDecimal"
-                        />
+                        android:layout_marginStart="5dp"
+                        android:layout_marginEnd="5dp"
+                        android:hint="0-60 per minute"
+                        app:boxCornerRadiusBottomEnd="5dp"
+                        app:boxCornerRadiusBottomStart="5dp"
+                        app:boxCornerRadiusTopEnd="5dp"
+                        app:boxCornerRadiusTopStart="5dp"
+                        android:textColorHint="@color/purple_500"
+                        android:background="@drawable/inputbg"
+                        >
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:textColor="@color/black"
+                            android:id="@+id/edtRespRate"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:textSize="16sp"
+                            android:inputType="numberDecimal"
+                            tools:ignore="KeyboardInaccessibleWidget" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
 
             </LinearLayout>

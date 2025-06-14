@@ -6,8 +6,10 @@ import android.util.Log;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.fadhlillahb.covidtracker.FirebaseCryptoHelper;
 import com.fadhlillahb.covidtracker.R;
 import com.fadhlillahb.covidtracker.Session;
+import com.fuzzylite.Engine;
 import com.fuzzylite.activation.General;
 import com.fuzzylite.defuzzifier.Centroid;
 import com.fuzzylite.norm.TNorm;
@@ -19,7 +21,6 @@ import com.fuzzylite.term.Term;
 import com.fuzzylite.term.Trapezoid;
 import com.fuzzylite.variable.InputVariable;
 import com.fuzzylite.variable.OutputVariable;
-import com.fuzzylite.*;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
@@ -37,8 +38,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class HistoryDetail extends AppCompatActivity {
 
-    EditText edtHeartRate, edtSPO, edtTemp, edtSystole, edtDiastole, edtRespRate, edtTimestamp, edtTestID, edtFuzzyValue, edtFuzzy;
-
+    EditText edtHeartRate, edtSPO, edtTemp, edtSystole, edtDiastole, edtRespRate, edtTimestamp, edtFuzzyValue, edtFuzzy;
     private static final String TAG = "HISTORY_DETAIL";
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -48,7 +48,6 @@ public class HistoryDetail extends AppCompatActivity {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_history_detail);
 
         edtHeartRate = findViewById(R.id.edtHeartRate);
@@ -58,7 +57,6 @@ public class HistoryDetail extends AppCompatActivity {
         edtDiastole = findViewById(R.id.edtDiastole);
         edtRespRate = findViewById(R.id.edtRespRate);
         edtTimestamp = findViewById(R.id.edtTimestamp);
-        edtTestID = findViewById(R.id.edtTestID);
         edtFuzzyValue = findViewById(R.id.edtFuzzyValue);
         edtFuzzy = findViewById(R.id.edtFuzzy);
         session = new Session(getApplicationContext());
@@ -66,48 +64,61 @@ public class HistoryDetail extends AppCompatActivity {
         Intent intent = getIntent();
         String id = intent.getStringExtra("ID");
 
-        if (id != null){
+        if (id != null) {
             DocumentReference documentReference = vitalSigns.document(id);
             documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                    if (task.isSuccessful()){
+                    if (task.isSuccessful()) {
                         DocumentSnapshot document = task.getResult();
-                        if (document.exists()){
+                        if (document.exists()) {
+                            try {
+                                FirebaseCryptoHelper crypto = new FirebaseCryptoHelper();
 
-                            String heartRate = String.valueOf(document.get("heartRate"));
-                            String spo2 = String.valueOf(document.get("spo2"));
-                            String temperature = String.valueOf(document.get("temperature"));
-                            String systole = String.valueOf(document.get("systole"));
-                            String diastole = String.valueOf(document.get("diastole"));
-                            String respRate = String.valueOf(document.get("respRate"));
+                                String heartRate = crypto.decrypt(document.getString("heartRate"));
+                                String spo2 = crypto.decrypt(document.getString("spo2"));
+                                String temperature = crypto.decrypt(document.getString("temperature"));
+                                String systole = crypto.decrypt(document.getString("systole"));
+                                String diastole = crypto.decrypt(document.getString("diastole"));
+                                String respRate = crypto.decrypt(document.getString("respRate"));
 
-                            checkfuzzy(Float.parseFloat(heartRate), Float.parseFloat(spo2), Float.parseFloat(temperature), Float.parseFloat(systole), Float.parseFloat(diastole), Float.parseFloat(respRate));
+                                edtHeartRate.setText(heartRate);
+                                edtSPO.setText(spo2);
+                                edtTemp.setText(temperature);
+                                edtSystole.setText(systole);
+                                edtDiastole.setText(diastole);
+                                edtRespRate.setText(respRate);
 
-                            edtHeartRate.setText(String.valueOf(document.get("heartRate")));
-                            edtSPO.setText(String.valueOf(document.get("spo2")));
-                            edtTemp.setText(String.valueOf(document.get("temperature")));
-                            edtSystole.setText(String.valueOf(document.get("systole")));
-                            edtDiastole.setText(String.valueOf(document.get("diastole")));
-                            edtRespRate.setText(String.valueOf(document.get("respRate")));
-                            edtTestID.setText(String.valueOf(document.get("testId")));
-                            Date timestamp = document.getTimestamp("timestamp").toDate();
-                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
-                            edtTimestamp.setText(sdf.format(timestamp));
+                                float hr = Float.parseFloat(heartRate);
+                                float sp = Float.parseFloat(spo2);
+                                float temp = Float.parseFloat(temperature);
+                                float sys = Float.parseFloat(systole);
+                                float dias = Float.parseFloat(diastole);
+                                float resp = Float.parseFloat(respRate);
 
-                            Log.d("LOADEDHISTORY", "id: " + id + ", timestamp: " + timestamp);
+                                checkfuzzy(hr, sp, temp, sys, dias, resp);
+
+                                Date timestamp = document.getTimestamp("timestamp").toDate();
+                                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+                                edtTimestamp.setText(sdf.format(timestamp));
+
+                                Log.d(TAG, "Decrypted & Loaded ID: " + id + ", timestamp: " + timestamp);
+
+                            } catch (Exception e) {
+                                Log.e(TAG, "Decryption error", e);
+                                Toast.makeText(getApplicationContext(), "Decryption failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
                         } else {
                             Toast.makeText(getApplicationContext(), "Data not found", Toast.LENGTH_SHORT).show();
-                            Log.d("LOADEDHISTORY", "Data not found");
+                            Log.d(TAG, "Data not found");
                         }
                     } else {
                         Toast.makeText(getApplicationContext(), "Error getting data", Toast.LENGTH_SHORT).show();
-                        Log.d("LOADEDHISTORY", "Error getting documents: ", task.getException());
+                        Log.e(TAG, "Error getting documents", task.getException());
                     }
                 }
             });
         }
-
     }
 
     public void checkfuzzy(float heartrate, float spo2, float temperature, float systole, float diastole, float respRate) {

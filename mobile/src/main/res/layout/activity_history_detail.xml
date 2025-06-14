@@ -101,34 +101,34 @@
                     />
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/layoutTESTID"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/testid"
-                    android:id="@+id/txtTestID"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/black"
-                    android:labelFor="@id/edtTestID"
-                    />
+<!--            <LinearLayout-->
+<!--                android:id="@+id/layoutTESTID"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:orientation="horizontal">-->
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="@string/testid"-->
+<!--                    android:id="@+id/txtTestID"-->
+<!--                    android:textSize="16sp"-->
+<!--                    android:textStyle="bold"-->
+<!--                    android:textColor="@color/black"-->
+<!--                    android:labelFor="@id/edtTestID"-->
+<!--                    />-->
 
-                <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:importantForAutofill="no"
-                    android:textColorHint="#CFDADE"
-                    android:textColor="@color/black"
-                    android:id="@+id/edtTestID"
-                    android:textSize="16sp"
-                    android:inputType="number"
-                    android:enabled="false"
-                    />
-            </LinearLayout>
+<!--                <EditText-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:importantForAutofill="no"-->
+<!--                    android:textColorHint="#CFDADE"-->
+<!--                    android:textColor="@color/black"-->
+<!--                    android:id="@+id/edtTestID"-->
+<!--                    android:textSize="16sp"-->
+<!--                    android:inputType="number"-->
+<!--                    android:enabled="false"-->
+<!--                    />-->
+<!--            </LinearLayout>-->
 
             <LinearLayout
                 android:id="@+id/layoutTimestamp"
